@@ -53,7 +53,7 @@ class Jasmine_Node implements \PHPCI\Plugin
   public function execute()
   {
     if(!$this->executable) {
-      $this->phpci->logFailure(Lang::get('could_not_find', 'Jasmine'));
+      $this->phpci->logFailure(Lang::get('could_not_find', 'jasmine-node'));
       return false;
     }
     if(!$this->directory) {
