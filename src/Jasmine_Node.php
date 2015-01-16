@@ -7,7 +7,7 @@
 * @link         https://www.phptesting.org/
 */
 
-namespace PHPCI_Pho_Plugin;
+namespace PHPCI_Jasmine_Node_Plugin;
 
 use PHPCI\Builder;
 use PHPCI\Model\Build;
@@ -15,15 +15,12 @@ use PHPCI\Helper\Lang;
 use PHPCI\Plugin\Util\TapParser;
 
 /**
-* Pho plugin, runs Pho tests within a project.
+* Jasmine plugin, runs Jasmine tests within a project.
 * @package PHPCI\Plugin
 */
-class Pho implements \PHPCI\Plugin
+class Jasmine_Node implements \PHPCI\Plugin
 {
   private $executable;
-  private $bootstrap;
-  private $filter;
-  private $namespace;
   private $directory;
   private $log;
 
@@ -40,21 +37,6 @@ class Pho implements \PHPCI\Plugin
 
     if (isset($options['executable'])) {
       $this->executable = $options['executable'];
-    } else {
-      $curdir = getcwd();
-      chdir($this->phpci->buildPath);
-      $this->executable = $this->phpci->findBinary('pho');
-      chdir($curdir);
-    }
-
-    if (isset($options['bootstrap'])) {
-      $this->bootstrap = $options['bootstrap'];
-    }
-    if (isset($options['filter'])) {
-      $this->filter = $options['filter'];
-    }
-    if (isset($options['namespace'])) {
-      $this->namespace = true;
     }
     if (isset($options['directory'])) {
       $this->directory = $options['directory'];
@@ -65,13 +47,13 @@ class Pho implements \PHPCI\Plugin
   }
 
   /**
-  * Run the Pho plugin.
+  * Run the Jasmine plugin.
   * @return bool
   */
   public function execute()
   {
     if(!$this->executable) {
-      $this->phpci->logFailure(Lang::get('could_not_find', 'pho'));
+      $this->phpci->logFailure(Lang::get('could_not_find', 'Jasmine'));
       return false;
     }
     if(!$this->directory) {
@@ -81,18 +63,7 @@ class Pho implements \PHPCI\Plugin
 
     $this->phpci->logExecOutput(false);
 
-    $cmd = escapeshellarg($this->executable) . " -C --reporter spec";
-
-    if ($this->bootstrap) {
-      $bootstrapPath = $this->phpci->buildPath . $this->bootstrap;
-      $cmd .= " -b " . escapeshellarg($bootstrapPath);
-    }
-    if ($this->filter) {
-      $cmd .= " -f " . escapeshellarg($this->filter);
-    }
-    if ($this->namespace) {
-      $cmd .= " -n";
-    }
+    $cmd = escapeshellarg($this->executable) . " -noColor --verbose";
 
     $cmd .= " " . escapeshellarg($this->phpci->buildPath . $this->directory);
     $this->phpci->executeCommand($cmd);
@@ -102,7 +73,7 @@ class Pho implements \PHPCI\Plugin
       $this->phpci->log($output);
 
     $matches = array();
-    preg_match('~(\d+) spec.*?(\d+) failure~', $output, $matches);
+    preg_match('~(\d+) test.*?(\d+) failure~', $output, $matches);
     $specs = $matches[1];
     $failures = $matches[2];
 
@@ -112,7 +83,7 @@ class Pho implements \PHPCI\Plugin
     } elseif ($failures > 0) {
       if(!$this->log)
         $this->phpci->logFailure($output);
-      
+
       return false;
     } else {
       return true;

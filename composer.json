@@ -1,10 +1,10 @@
 {
-  "name": "austp/phpci-pho-plugin",
-  "description": "A plugin for PHPCI to run pho tests",
+  "name": "austp/phpci-jasmine-plugin",
+  "description": "A plugin for PHPCI to run Jasmine tests",
   "keywords": [
-    "phpci", "plugin", "pho", "test", "bdd"
+    "phpci", "plugin", "jasmine", "test", "bdd"
   ],
-  "homepage": "https://github.com/austp/phpci-pho-plugin",
+  "homepage": "https://github.com/austp/phpci-jasmine-plugin",
   "license": "MIT",
   "authors": [
     {
@@ -12,14 +12,11 @@
       "email": "austp17@gmail.com"
     }
   ],
-  "require": {
-    "danielstjules/pho": "~1.1"
-  },
   "support": {
-    "issues": "https://github.com/austp/phpci-pho-plugin/issues",
-    "source": "https://github.com/austp/phpci-pho-plugin"
+    "issues": "https://github.com/austp/phpci-jasmine-plugin/issues",
+    "source": "https://github.com/austp/phpci-jasmine-plugin"
   },
   "autoload": {
-    "psr-4": { "PHPCI_Pho_Plugin\\": "src/" }
+    "psr-4": { "PHPCI_Jasmine_Plugin\\": "src/" }
   }
 }
