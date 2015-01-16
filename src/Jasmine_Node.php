@@ -63,7 +63,7 @@ class Jasmine_Node implements \PHPCI\Plugin
 
     $this->phpci->logExecOutput(false);
 
-    $cmd = escapeshellarg($this->executable) . " -noColor --verbose";
+    $cmd = escapeshellarg($this->executable) . " --noColor --verbose";
 
     $cmd .= " " . escapeshellarg($this->phpci->buildPath . $this->directory);
     $this->phpci->executeCommand($cmd);
