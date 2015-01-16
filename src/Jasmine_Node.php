@@ -69,6 +69,8 @@ class Jasmine_Node implements \PHPCI\Plugin
     $this->phpci->executeCommand($cmd);
     $output = $this->phpci->getLastOutput();
 
+    $this->phpci->logExecOutput(true);
+
     if($this->log)
       $this->phpci->log($output);
 
@@ -76,6 +78,9 @@ class Jasmine_Node implements \PHPCI\Plugin
     preg_match('~(\d+) test.*?(\d+) failure~', $output, $matches);
     $specs = $matches[1];
     $failures = $matches[2];
+
+    $this->build->storeMeta('jasmine-node-errors', $failures);
+    $this->build->storeMeta('jasmine-node-data', $output);
 
     if ($specs == 0) {
       $this->phpci->logFailure(Lang::get('no_tests_performed'));
