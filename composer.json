@@ -1,10 +1,10 @@
 {
-  "name": "austp/phpci-jasmine-plugin",
-  "description": "A plugin for PHPCI to run Jasmine tests",
+  "name": "austp/phpci-jasmine-node-plugin",
+  "description": "A plugin for PHPCI to run Jasmine tests via jasmine-node",
   "keywords": [
-    "phpci", "plugin", "jasmine", "test", "bdd"
+    "phpci", "plugin", "jasmine", "jasmine-node", "test", "bdd"
   ],
-  "homepage": "https://github.com/austp/phpci-jasmine-plugin",
+  "homepage": "https://github.com/austp/phpci-jasmine-node-plugin",
   "license": "MIT",
   "authors": [
     {
@@ -13,10 +13,10 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/austp/phpci-jasmine-plugin/issues",
-    "source": "https://github.com/austp/phpci-jasmine-plugin"
+    "issues": "https://github.com/austp/phpci-jasmine-node-plugin/issues",
+    "source": "https://github.com/austp/phpci-jasmine-node-plugin"
   },
   "autoload": {
-    "psr-4": { "PHPCI_Jasmine_Plugin\\": "src/" }
+    "psr-4": { "PHPCI_Jasmine_Node_Plugin\\": "src/" }
   }
 }
