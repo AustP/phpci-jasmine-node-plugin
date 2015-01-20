@@ -17,7 +17,7 @@ to run [jasmine-node](https://github.com/mhevery/jasmine-node) tests via PHPCI.
 4. Download the plugin via composer. `composer update austp/phpci-jasmine-node-plugin`
 5. Copy `build-plugins/jasminenode.js` to `/path/to/phpci/public/assets/js/build-plugins/jasminenode.js`
 
-        cd /path/to/phpci/vendor/austp/phpci-pho-plugin/build-plugins
+        cd /path/to/phpci/vendor/austp/phpci-jasmine-node-plugin/build-plugins
         cp jasminenode.js /path/to/phpci/public/assets/js/build-plugins/jasminenode.js
 
 That's it as far as installation goes. Continue reading to see available options.
