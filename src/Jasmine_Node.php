@@ -52,11 +52,11 @@ class Jasmine_Node implements \PHPCI\Plugin
   */
   public function execute()
   {
-    if(!$this->executable) {
+    if (!$this->executable) {
       $this->phpci->logFailure(Lang::get('could_not_find', 'jasmine-node'));
       return false;
     }
-    if(!$this->directory) {
+    if (!$this->directory) {
       $this->phpci->logFailure(Lang::get('invalid_command'));
       return false;
     }
@@ -71,8 +71,8 @@ class Jasmine_Node implements \PHPCI\Plugin
 
     $this->phpci->logExecOutput(true);
 
-    if($this->log)
-    $this->phpci->log($output);
+    if ($this->log)
+      $this->phpci->log($output);
 
     $output = explode('Finished in ', $output);
     $specs = $output[0];
@@ -96,10 +96,10 @@ class Jasmine_Node implements \PHPCI\Plugin
 
     $specs = explode('Failures:', $specs);
     $specFailure = isset($specs[1])? 'Failures:' . $specs[1]: '';
-    if($specFailure){
+    if ($specFailure) {
       $matches = array();
       preg_match_all("~\d+\) (.+)\s+Message:\s+(.+)\s+Stacktrace:\s+([\s\S]+?)(?= \d+\)|$)~", $specs[1], $matches);
-      foreach($matches[0] as $i=>$match){
+      foreach ($matches[0] as $i=>$match) {
         $definition = $matches[1][$i];
         $expected = $matches[2][$i];
         $stacktrace = $matches[3][$i];
