@@ -34,32 +34,34 @@ var jasmineNodePlugin = ActiveBuild.UiPlugin.extend({
   },
 
   onUpdate: function(e) {
-    if (!e.queryData)
+    if (!e.queryData) {
+      $('#build-jasmine-node-errors').hide();
       return;
-
-      this.rendered = true;
-      this.lastData = e.queryData;
-
-      var tests = this.lastData[0].meta_value;
-      var tbody = $('#jasmine-node-data tbody');
-      tbody.empty();
-
-      $('#jasmine-node-metadata').html(tests.metadata.seconds + '<br>' + tests.metadata.specData);
-
-      for (var i=0, l=tests.expectations.length; i<l; i++) {
-        var expectation = tests.expectations[i];
-        var html = '<td><b>' + expectation.d + '</b><br>' +
-        expectation.e + '<br>' +
-        '<em>' + expectation.s.replace("\n", "<br>") + '</em></td>';
-
-        var tr = document.createElement('tr');
-        tr.className = 'danger';
-        tr.innerHTML = html;
-        tbody.append(tr);
-      }
-
-      $('#build-jasmine-node-errors').show();
     }
-  });
 
-  ActiveBuild.registerPlugin(new jasmineNodePlugin());
+    this.rendered = true;
+    this.lastData = e.queryData;
+
+    var tests = this.lastData[0].meta_value;
+    var tbody = $('#jasmine-node-data tbody');
+    tbody.empty();
+
+    $('#jasmine-node-metadata').html(tests.metadata.seconds + '<br>' + tests.metadata.specData);
+
+    for (var i=0, l=tests.expectations.length; i<l; i++) {
+      var expectation = tests.expectations[i];
+      var html = '<td><b>' + expectation.d + '</b><br>' +
+      expectation.e + '<br>' +
+      '<em>' + expectation.s.replace("\n", "<br>") + '</em></td>';
+
+      var tr = document.createElement('tr');
+      tr.className = 'danger';
+      tr.innerHTML = html;
+      tbody.append(tr);
+    }
+
+    $('#build-jasmine-node-errors').show();
+  }
+});
+
+ActiveBuild.registerPlugin(new jasmineNodePlugin());
