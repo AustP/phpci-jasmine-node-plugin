@@ -72,22 +72,55 @@ class Jasmine_Node implements \PHPCI\Plugin
     $this->phpci->logExecOutput(true);
 
     if($this->log)
-      $this->phpci->log($output);
+    $this->phpci->log($output);
+
+    $output = explode('Finished in ', $output);
+    $specs = $output[0];
+    $metadata = preg_split("~\r\n|\n|\r~", $output[1]);
+
+    $seconds = 'Finished in ' . $metadata[0];
+    $specData = $metadata[1];
 
     $matches = array();
-    preg_match('~(\d+) test.*?(\d+) failure~', $output, $matches);
-    $specs = $matches[1];
-    $failures = $matches[2];
+    preg_match('~(\d+) test.*?(\d+) failure~', $specData, $matches);
+    $specCount = $matches[1];
+    $failureCount = $matches[2];
 
-    $this->build->storeMeta('jasmine-node-errors', $failures);
-    $this->build->storeMeta('jasmine-node-data', $output);
+    $data = array(
+      'metadata'=>array(
+        'seconds'=>$seconds,
+        'specData'=>$specData
+      ),
+      'expectations'=>array()
+    );
 
-    if ($specs == 0) {
+    $specs = explode('Failures:', $specs);
+    $specFailure = isset($specs[1])? 'Failures:' . $specs[1]: '';
+    if($specFailure){
+      $matches = array();
+      preg_match_all("~\d+\) (.+)\s+Message:\s+(.+)\s+Stacktrace:\s+([\s\S]+?)(?= \d+\)|$)~", $specs[1], $matches);
+      foreach($matches[0] as $i=>$match){
+        $definition = $matches[1][$i];
+        $expected = $matches[2][$i];
+        $stacktrace = $matches[3][$i];
+
+        $data['expectations'][] = array(
+          'd'=>$definition,
+          'e'=>$expected,
+          's'=>$stacktrace
+        );
+      }
+    }
+
+    $this->build->storeMeta('jasmine-node-errors', $failureCount);
+    $this->build->storeMeta('jasmine-node-data', $data);
+
+    if ($specCount == 0) {
       $this->phpci->logFailure(Lang::get('no_tests_performed'));
       return false;
-    } elseif ($failures > 0) {
-      if(!$this->log)
-        $this->phpci->logFailure($output);
+    } elseif ($failureCount > 0) {
+      if (!$this->log)
+        $this->phpci->logFailure($specFailure);
 
       return false;
     } else {
